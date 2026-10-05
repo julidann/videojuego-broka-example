@@ -3,12 +3,12 @@ const images=[
 {name:"Espacio",src:"assets/espacio.svg"},{name:"Mar",src:"assets/mar.svg"},{name:"Desierto",src:"assets/desierto.svg"}];
 const levels=[{filter:"grayscale(1)"},{filter:"brightness(.3)"},{filter:"invert(1)"}];
 const maxTime=30;
-let level=0,image,rotations=[],fixed=[],seconds=0,timerId,started=false;
+let level=0,image,rotations=[],fixed=[],seconds=0,timerId,started=false,lost=false;
 const $=id=>document.getElementById(id);
 $("instructionsBtn").onclick=()=>$("instructions").showModal();
 $("closeInstructions").onclick=()=>$("instructions").close();
 $("startBtn").onclick=()=>startGame();
-$("menuBtn").onclick=showMenu;$("resultMenuBtn").onclick=showMenu;$("nextBtn").onclick=()=>{level++;startGame()};
+$("menuBtn").onclick=showMenu;$("resultMenuBtn").onclick=showMenu;$("nextBtn").onclick=()=>{if(lost){startGame()}else{level++;startGame()}};
 $("helpBtn").onclick=()=>{
 if(!started)return;
 const available=rotations.map((_,i)=>i).filter(i=>!fixed.includes(i));if(!available.length)return;
@@ -16,7 +16,7 @@ const i=available[Math.floor(Math.random()*available.length)];rotations[i]=0;fix
 };
 function startGame(){
 if(level>=levels.length)level=0;
-image=images[Math.floor(Math.random()*images.length)];rotations=[1,2,3,1].sort(()=>Math.random()-.5);fixed=[];seconds=0;started=true;
+image=images[Math.floor(Math.random()*images.length)];rotations=[1,2,3,1].sort(()=>Math.random()-.5);fixed=[];seconds=0;started=true;lost=false;
 $("intro").classList.add("hidden");$("result").classList.add("hidden");$("game").classList.remove("hidden");
 $("levelText").textContent=(level+1)+" / "+levels.length;$("imageName").textContent=image.name;
 clearInterval(timerId);timerId=setInterval(()=>{seconds++;updateTimer();if(level===2&&seconds>=maxTime)loseGame()},1000);render();updateTimer();
@@ -33,6 +33,6 @@ board.appendChild(piece);
 });
 }
 function checkWin(){
-if(rotations.every(r=>r===0)){clearInterval(timerId);started=false;$("finalTime").textContent=$("timer").textContent;$("game").classList.add("hidden");$("result").classList.remove("hidden");$("nextBtn").textContent=level===levels.length-1?"Jugar de nuevo":"Siguiente nivel"}
+if(rotations.every(r=>r===0)){clearInterval(timerId);started=false;lost=false;$("finalTime").textContent=$("timer").textContent;$("game").classList.add("hidden");$("result").classList.remove("hidden");$("nextBtn").textContent=level===levels.length-1?"Jugar de nuevo":"Siguiente nivel"}
 }
-function loseGame(){clearInterval(timerId);started=false;$("resultTitle").textContent="TIEMPO AGOTADO";$("finalTime").textContent="30 segundos";$("nextBtn").textContent="Intentar de nuevo";$("game").classList.add("hidden");$("result").classList.remove("hidden")}\nfunction showMenu(){clearInterval(timerId);started=false;$("game").classList.add("hidden");$("result").classList.add("hidden");$("intro").classList.remove("hidden");level=0}
+function loseGame(){clearInterval(timerId);started=false;lost=true;$("resultTitle").textContent="TIEMPO AGOTADO";$("finalTime").textContent="30 segundos";$("nextBtn").textContent="Intentar de nuevo";$("game").classList.add("hidden");$("result").classList.remove("hidden")}\nfunction showMenu(){clearInterval(timerId);started=false;$("game").classList.add("hidden");$("result").classList.add("hidden");$("intro").classList.remove("hidden");level=0}
