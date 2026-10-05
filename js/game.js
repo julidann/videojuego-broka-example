@@ -1,7 +1,8 @@
 const images=[
 {name:"Montaña",src:"assets/montana.svg"},{name:"Bosque",src:"assets/bosque.svg"},{name:"Ciudad",src:"assets/ciudad.svg"},
 {name:"Espacio",src:"assets/espacio.svg"},{name:"Mar",src:"assets/mar.svg"},{name:"Desierto",src:"assets/desierto.svg"}];
-const levels=[{filter:"grayscale(1)"},{filter:"brightness(.7)"},{filter:"invert(1)"}];
+const levels=[{filter:"grayscale(1)"},{filter:"brightness(.3)"},{filter:"invert(1)"}];
+const maxTime=30;
 let level=0,image,rotations=[],fixed=[],seconds=0,timerId,started=false;
 const $=id=>document.getElementById(id);
 $("instructionsBtn").onclick=()=>$("instructions").showModal();
@@ -18,7 +19,7 @@ if(level>=levels.length)level=0;
 image=images[Math.floor(Math.random()*images.length)];rotations=[1,2,3,1].sort(()=>Math.random()-.5);fixed=[];seconds=0;started=true;
 $("intro").classList.add("hidden");$("result").classList.add("hidden");$("game").classList.remove("hidden");
 $("levelText").textContent=(level+1)+" / "+levels.length;$("imageName").textContent=image.name;
-clearInterval(timerId);timerId=setInterval(()=>{seconds++;updateTimer()},1000);render();updateTimer();
+clearInterval(timerId);timerId=setInterval(()=>{seconds++;updateTimer();if(level===2&&seconds>=maxTime)loseGame()},1000);render();updateTimer();
 }
 function updateTimer(){const m=String(Math.floor(seconds/60)).padStart(2,"0"),s=String(seconds%60).padStart(2,"0");$("timer").textContent=m+":"+s}
 function render(){
@@ -34,4 +35,4 @@ board.appendChild(piece);
 function checkWin(){
 if(rotations.every(r=>r===0)){clearInterval(timerId);started=false;$("finalTime").textContent=$("timer").textContent;$("game").classList.add("hidden");$("result").classList.remove("hidden");$("nextBtn").textContent=level===levels.length-1?"Jugar de nuevo":"Siguiente nivel"}
 }
-function showMenu(){clearInterval(timerId);started=false;$("game").classList.add("hidden");$("result").classList.add("hidden");$("intro").classList.remove("hidden");level=0}
+function loseGame(){clearInterval(timerId);started=false;$("resultTitle").textContent="TIEMPO AGOTADO";$("finalTime").textContent="30 segundos";$("nextBtn").textContent="Intentar de nuevo";$("game").classList.add("hidden");$("result").classList.remove("hidden")}\nfunction showMenu(){clearInterval(timerId);started=false;$("game").classList.add("hidden");$("result").classList.add("hidden");$("intro").classList.remove("hidden");level=0}
