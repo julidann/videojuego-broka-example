@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BLOCKA</title><link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar"><a class="logo" href="index.html">BLOCKA</a><button id="instructionsBtn" class="small-btn">¿Cómo jugar?</button></header>
+<main class="game-page">
+<section class="intro" id="intro"><p class="eyebrow">VIDEOJUEGO • ROMPECABEZAS</p><h1>BLOCKA</h1><p>Gir&aacute; las partes de la imagen hasta reconstruirla.</p><button id="startBtn" class="main-btn">Comenzar</button></section>
+<section class="game hidden" id="game">
+<div class="game-info"><div><span>NIVEL</span><strong id="levelText">1 / 3</strong></div><div><span>TIEMPO</span><strong id="timer">00:00</strong></div><div><span>IMAGEN</span><strong id="imageName">-</strong></div></div>
+<div id="board" class="board"></div>
+<div class="controls"><button id="helpBtn" class="secondary-btn">Ayudita (+5s)</button><button id="menuBtn" class="secondary-btn">Men&uacute;</button></div>
+<p class="hint">Click izquierdo: gira a la izquierda · Click derecho: gira a la derecha</p>
+</section>
+<section class="result hidden" id="result"><p class="eyebrow">NIVEL COMPLETADO</p><h2>¡BLOCKA RESUELTA!</h2><p>Tiempo: <strong id="finalTime">00:00</strong></p><div class="result-actions"><button id="nextBtn" class="main-btn">Siguiente nivel</button><button id="resultMenuBtn" class="secondary-btn">Men&uacute; principal</button></div></section>
+</main>
+<dialog id="instructions"><h2>¿Cómo jugar?</h2><p>La imagen está dividida en cuatro partes y cada parte está rotada.</p><p>Hacé <strong>click izquierdo</strong> para girar una pieza hacia la izquierda y <strong>click derecho</strong> para girarla hacia la derecha.</p><p>Completá la imagen antes de que termine el tiempo.</p><button id="closeInstructions" class="main-btn">Entendido</button></dialog>
+<script src="js/game.js"></script>
+</body></html>
